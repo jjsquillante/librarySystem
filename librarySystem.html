@@ -1,0 +1,70 @@
+<html>
+  <body> 
+  </body>
+</html>
+
+
+<script src="tinytest.js"></script>
+<script src="librarySystem.js"></script>
+<script>
+
+tests({
+
+  'should accept a library module': function() {
+    librarySystem('app', [] , function() {
+      return 'this is the app module';
+    });
+
+    eq(librarySystem('app') === 'this is the app module', true);
+    libReset();
+  },
+
+  'library should accept a dependency': function() {
+    librarySystem('router', [], function() {
+      return 'hello router';
+    })
+    librarySystem('app', ['router'], function(router) {
+      return {
+        router: router
+      }
+    });
+
+    eq(librarySystem('app').router === 'hello router', true);
+    libReset();
+  },
+
+  'library should accept multiple dependencies': function() {
+    librarySystem('name', [], function() {;
+      return 'Gordon';
+    });
+    librarySystem('company', [], function() {
+      return 'watchandcode';
+    });
+    librarySystem('workBlurb', ['name', 'company'], function(name, company) {
+      return name + ' works at ' + company;
+    });
+
+    eq(librarySystem('workBlurb') === 'Gordon works at watchandcode', true);
+    libReset();
+  },
+
+  'library should accept dependencies out of order': function() {
+    librarySystem('workBlurb', ['name', 'company'], function(name, company) {
+      return name + ' works at ' + company;
+    });
+
+    librarySystem('name', [], function() {
+      return 'Gordon';
+    });
+
+    librarySystem('company', [], function() {
+      return 'watchandcode';
+    });
+
+    eq(librarySystem('workBlurb') === 'Gordon works at watchandcode', true);
+    libReset();
+  }
+});
+
+
+</script>
