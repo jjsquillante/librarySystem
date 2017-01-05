@@ -1,7 +1,7 @@
   function librarySystem(libraryName, dependency, callback) {
   	if (arguments.length > 1) {
   		// register
-  		if (dependency.length) {
+  		if (dependency.length > 0) {
   			libraryStorage[libraryName] = {
   				callback: callback,
   				dependency: dependency
@@ -17,14 +17,14 @@
 
   function loadLibraries(libraryName) {
   	var dependencies = [];
-  	if (!!libraryStorage[libraryName].dependency) {
+  	if (libraryStorage[libraryName].dependency) {
   		var libraryDependency = libraryStorage[libraryName].dependency
   		for (var i = 0; i < libraryDependency.length; i++) {
   			if (libraryStorage.hasOwnProperty(libraryDependency[i])) {
   				dependencies.push(libraryStorage[libraryDependency[i]]);
   			};
   		}
-  		return libraryStorage[libraryName] = libraryStorage[libraryName].callback.apply(null, dependencies);
+  		libraryStorage[libraryName] = libraryStorage[libraryName].callback.apply(null, dependencies);
   	}
   	return libraryStorage[libraryName];
   }
