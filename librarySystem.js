@@ -1,4 +1,6 @@
-  function librarySystem(libraryName, dependency, callback) {
+var libraryStorage = {};
+
+function librarySystem(libraryName, dependency, callback) {
   	if (arguments.length > 1) {
   		// register
   		if (dependency.length > 0) {
